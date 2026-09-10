@@ -5,6 +5,12 @@ Tema de SDDM (Qt 6) del escritorio Shiro. Es un fork simplificado de
 configuración por archivos `.conf`, los idiomas y el selector de layout, y los
 valores quedaron fijos en el código.
 
+Proyectos Shiro: [shiro-theme](https://github.com/eusp/shiro-theme) ·
+[shiro-ags](https://github.com/eusp/shiro-ags) ·
+[shiro-hyprland](https://github.com/eusp/shiro-hyprland) ·
+**shiro-sddm** ·
+[shiro-grub](https://github.com/eusp/shiro-grub)
+
 Los colores (`components/Colors.qml`) y el fondo (`backgrounds/background.mp4`
 y `background.png`) los genera [shiro-theme](https://github.com/eusp/shiro-theme)
 con `builders/sddm.js`, así que no conviene editarlos a mano.
@@ -29,6 +35,10 @@ fonts/                    Red Hat Display (install.sh las copia a /usr/share/fon
 ```
 
 ## Instalación
+
+Lo normal es instalarlo desde shiro-theme (`install.sh`), que clona este repo directamente en
+`/usr/share/sddm/themes/shiro-sddm` y lo deja a nombre del usuario para que el builder pueda
+actualizar colores y fondo sin root. A mano:
 
 ```sh
 ./install.sh
