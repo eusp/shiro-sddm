@@ -11,8 +11,8 @@ Item {
 
             IconButton {
             id: sessionButton
-            property bool showLabel: true
-            preferredWidth: showLabel ? undefined : 32
+            showLabel: true
+            preferredWidth: showLabel ? -1 : 32
             height: 32
             iconSize: 16
             fontSize: 12
@@ -30,11 +30,7 @@ Item {
             activeFocusOnTab: true
             focus: false
             onClicked: {
-                if (loginScreen.isSelectingUser) {
-                    loginScreen.isSelectingUser = false;
-                } else {
-                    popup.open();
-                }
+                popup.open();
             }
             tooltipText: "Change session"
 
@@ -218,7 +214,7 @@ Item {
             id: keyboardButton
             height: 32
             width: 32
-            icon: "../icons/keyboard.svg" // fallback to an existing icon if keyboard doesn't exist, wait, do we have keyboard.svg? Let's check or use user-default.svg temporarily
+            icon: "../icons/keyboard.svg"
             iconSize: 16
             contentColor: root.virtualKeyboardVisible ? colors.crust : colors.text
             activeContentColor: colors.crust

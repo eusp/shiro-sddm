@@ -142,7 +142,7 @@ Item {
                 }
                 width: parent.width
                 icon: "../icons/user-default.svg"
-                placeholder: (textConstants && textConstants.userName) ? textConstants.userName : "Password"
+                placeholder: (textConstants && textConstants.userName) ? textConstants.userName : "Username"
                 isPassword: false
                 splitBorderRadius: false
                 enabled: loginScreen.state !== "authenticating"

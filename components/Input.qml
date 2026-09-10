@@ -14,7 +14,6 @@ Item {
     property bool splitBorderRadius: false
     property alias text: textField.text
     property string icon: ""
-    property bool enabled: true
 
     width: 200
     height: 36

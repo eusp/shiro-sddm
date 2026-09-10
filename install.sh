@@ -6,21 +6,25 @@ cyan='\033[0;36m'
 grey='\033[2;37m'
 reset="\033[0m"
 
+THEME_NAME="shiro-sddm"
+THEME_DIR="/usr/share/sddm/themes/${THEME_NAME}"
+CONF_FILE="/etc/sddm.conf.d/${THEME_NAME}.conf"
+
 SHPATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 install_dependencies () {
     if command -v pacman &>/dev/null; then
         echo -e "${grey}Installing dependencies with 'pacman'...${reset}"
-        sudo pacman -S --needed sddm qt6-svg qt6-multimedia-ffmpeg
+        sudo pacman -S --needed sddm qt6-svg qt6-multimedia-ffmpeg qt6-virtualkeyboard
     elif command -v xbps-install &>/dev/null; then
         echo -e "${grey}Installing dependencies with 'xbps'...${reset}"
-        sudo xbps-install sddm qt6-svg qt6-multimedia
+        sudo xbps-install sddm qt6-svg qt6-multimedia qt6-virtualkeyboard
     elif command -v dnf &>/dev/null; then
         echo -e "${grey}Installing dependencies with 'dnf'...${reset}"
-        sudo dnf install sddm qt6-qtsvg qt6-qtmultimedia
+        sudo dnf install sddm qt6-qtsvg qt6-qtmultimedia qt6-qtvirtualkeyboard
     elif command -v zypper &>/dev/null; then
         echo -e "${grey}Installing dependencies with 'zypper'...${reset}"
-        sudo zypper install sddm-qt6 libQt6Svg6 qt6-multimedia qt6-multimedia-imports
+        sudo zypper install sddm-qt6 libQt6Svg6 qt6-multimedia qt6-multimedia-imports qt6-virtualkeyboard-imports
     else
         echo -e "\n${red}Could not install dependencies!${reset}\n"
         return 1
@@ -28,34 +32,27 @@ install_dependencies () {
 }
 
 copy_files () {
-    echo -e "${grey}Copying files from '${SHPATH}/' to '/usr/share/sddm/themes/silent/'...${reset}"
-    sudo mkdir -p /usr/share/sddm/themes/silent
-    sudo cp -rf "$SHPATH"/. /usr/share/sddm/themes/silent/
+    # Running from the installed copy: nothing to copy.
+    if [[ "$SHPATH" == "$THEME_DIR" ]]; then
+        return 0
+    fi
+    echo -e "${grey}Copying files from '${SHPATH}/' to '${THEME_DIR}/'...${reset}"
+    sudo mkdir -p "$THEME_DIR"
+    sudo cp -rf "$SHPATH"/. "$THEME_DIR"/
 }
 
 copy_fonts () {
     echo -e "${grey}Copying fonts to '/usr/share/fonts/'...${reset}"
-    sudo cp -r /usr/share/sddm/themes/silent/fonts/{redhat,redhat-vf} /usr/share/fonts/
+    sudo cp -r "$THEME_DIR"/fonts/{redhat,redhat-vf} /usr/share/fonts/
 }
 
 apply_theme () {
-    echo -e "${grey}Editing '/etc/sddm.conf'...${reset}"
-    if [[ -f /etc/sddm.conf ]]; then
-        sudo cp -f /etc/sddm.conf /etc/sddm.conf.bkp
-        echo -e "${green}Backup for SDDM config saved in '/etc/sddm.conf.bkp'${reset}"
+    echo -e "${grey}Writing '${CONF_FILE}'...${reset}"
+    sudo mkdir -p /etc/sddm.conf.d
+    echo -e "[Theme]\nCurrent=${THEME_NAME}\n\n[General]\nGreeterEnvironment=QML2_IMPORT_PATH=${THEME_DIR}/components/" | sudo tee "$CONF_FILE" > /dev/null
 
-        if grep -Pzq '\[Theme\]\nCurrent=' /etc/sddm.conf; then
-            sudo sed -i '/^\[Theme\]$/{N;s/\(Current=\).*/\1silent/;}' /etc/sddm.conf
-        else
-            echo -e "\n[Theme]\nCurrent=silent" | sudo tee -a /etc/sddm.conf
-        fi
-
-        if ! grep -Pzq 'GreeterEnvironment=QML2_IMPORT_PATH=/usr/share/sddm/themes/silent/components/' /etc/sddm.conf; then
-            echo -e "\n[General]\nGreeterEnvironment=QML2_IMPORT_PATH=/usr/share/sddm/themes/silent/components/" | sudo tee -a /etc/sddm.conf
-        fi
-    else
-        echo -e "[Theme]\nCurrent=silent" | sudo tee -a /etc/sddm.conf
-        echo -e "\n[General]\nGreeterEnvironment=QML2_IMPORT_PATH=/usr/share/sddm/themes/silent/components/" | sudo tee -a /etc/sddm.conf
+    if [[ -f /etc/sddm.conf ]] && grep -Eq '^\s*Current=' /etc/sddm.conf; then
+        echo -e "${bred}[WARNING]: ${red}'/etc/sddm.conf' sets 'Current=' and overrides '${CONF_FILE}'. Comment that line out.${reset}"
     fi
 }
 
@@ -63,4 +60,4 @@ install_dependencies ;
 copy_files &&
 copy_fonts ;
 apply_theme &&
-echo -e "\n${green} Theme successfully installed!${reset}"
+echo -e "\n${green} Theme successfully installed!${reset}"

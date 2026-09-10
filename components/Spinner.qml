@@ -45,16 +45,8 @@ Item {
         visible: false
 
         Component.onCompleted: {
-            if (false) { // center
-                anchors.left = parent.left;
-                anchors.verticalCenter = parent.verticalCenter;
-            } else if (root.loginAreaPosition === "right") {
-                anchors.right = parent.right;
-                anchors.verticalCenter = parent.verticalCenter;
-            } else {
-                anchors.top = parent.top;
-                anchors.horizontalCenter = parent.horizontalCenter;
-            }
+            anchors.top = parent.top;
+            anchors.horizontalCenter = parent.horizontalCenter;
         }
     }
     MultiEffect {

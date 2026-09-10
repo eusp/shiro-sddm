@@ -120,7 +120,7 @@ Item {
                 var ext = parts[parts.length - 1];
                 return ["avi", "mp4", "mov", "mkv", "m4v", "webm"].indexOf(ext) !== -1;
             }
-            property bool displayColor: root.state === "lockState" && false || root.state === "loginState" && false
+            property bool displayColor: false
             property string placeholder: "background.png" // Idea stolen from astronaut-theme. Not a fan of it, but works...
 
             anchors.fill: parent
@@ -159,7 +159,7 @@ Item {
                 id: backgroundColor
                 anchors.fill: parent
                 anchors.margins: 0
-                color: root.state === "lockState" && false ? colors.crust : (root.state === "loginState" && false ? colors.crust : "black")
+                color: "black"
                 visible: parent.displayColor || (backgroundVideo.visible && parent.placeholder.length === 0)
             }
 
