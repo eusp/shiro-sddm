@@ -9,7 +9,8 @@ Proyectos Shiro: [shiro-theme](https://github.com/eusp/shiro-theme) ·
 [shiro-ags](https://github.com/eusp/shiro-ags) ·
 [shiro-hyprland](https://github.com/eusp/shiro-hyprland) ·
 **shiro-sddm** ·
-[shiro-grub](https://github.com/eusp/shiro-grub)
+[shiro-grub](https://github.com/eusp/shiro-grub) ·
+[shiro-limine](https://github.com/eusp/shiro-limine)
 
 Los colores (`components/Colors.qml`) y el fondo (`backgrounds/background.mp4`
 y `background.png`) los genera [shiro-theme](https://github.com/eusp/shiro-theme)
